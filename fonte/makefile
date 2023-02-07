@@ -1,6 +1,4 @@
-#################################
-##### Linux Makefile
-#################################
+##### MAKEFILE ####
 
 ##### Compiler
 COMPILER = g++
@@ -38,42 +36,6 @@ OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 ##### Executable name
 EXEC = main.exe
 
-###################################
-##### Windows Makefile
-###################################
-ifeq ($(OS),Windows_NT)
-
-##### Recursive directory removal command
-RMDIR = rd /s /q
-
-##### File delete command
-RM = del /q
-
-LINK_PATH = $(addprefix -L,$(addsuffix /lib))
-FLAGS += -mwindows
-DFLAGS += -mconsole
-LIBS := -lmingw32 $(LIBS)
-
-##### Executable name
-EXEC := $(EXEC).exe
-
-else
-
-UNAME_S := $(shell uname -s)
-
-###############################
-##### Mac Makefile
-###############################
-
-ifeq ($(UNAME_S), Darwin)
-
-LIBS = -lm
-
-endif
-endif
-
-#################################
-
 .PRECIOUS: $(DEP_FILES)
 .PHONY: release debug cppcheck valgrind limpa pastas ajuda executa
 
@@ -108,8 +70,8 @@ cppcheck:
 valgrind:
 	valgrind -v --leak-check=full --show-leak-kinds=all --track-origins=yes --dsymutil=yes ./$(EXEC)
 
-release: FLAGS += $(RFLAGS)
-release: $(EXEC)
+build: FLAGS += $(RFLAGS)
+build: $(EXEC)
 
 debug: FLAGS += $(DFLAGS)
 debug: $(EXEC)
@@ -128,20 +90,19 @@ endif
 print-% : ; @echo $* = $($*)
 
 ajuda:
+
 ifeq ($(OS), Windows_NT)
 	@echo.
 endif
-	@echo Comandos disponiveis
-	@echo - release:  Builda versao release
-	@echo - debug:    Builda versao de debug
-	@echo - executa:  Executa o projeto compilado
-	@echo - limpa:    Limpa arquivos gerados
-	@echo - cppcheck: Roda o cppcheck nos codigos
-	@echo - valgrind: Roda o valgrind nos arquivos compilados - nao checado
-	@echo - ajuda:    Mostra essa tela de ajuda
-	@echo - pastas:   Gera os diretorios do projeto
+	@echo `tput bold`build:`tput sgr0`      Compila os arquivos binários
+	@echo `tput bold`debug:`tput sgr0`      Compila versão de debug do projeto
+	@echo `tput bold`executa:`tput sgr0`    Executa o programa compilado
+	@echo `tput bold`limpa:`tput sgr0`      Deleta os arquivos gerados
+	@echo `tput bold`cppcheck:`tput sgr0`   Roda o cppcheck nos arquivos
+	@echo `tput bold`ajuda:`tput sgr0`      Mostra uma lista dos comandos disponíveis
+	@echo `tput bold`pastas:`tput sgr0`     Cria as pastas do projeto caso não existem ainda.
 	@echo
-	@echo O makefile suporta Windows e Linux, mas so sera testado em Linux!
+	@echo Esse makefile deve rodar em sistema Linux. Pode haver problemas em outros sistemas.
 ifeq ($(OS), Windows_NT)
 	@echo.
 endif
