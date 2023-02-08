@@ -3,6 +3,7 @@
 void AplicacaoTransmissora() {
   string mensagem;
   cout << endl << "Digite uma mensagem: ";
+  int erro = 0;
   getline(cin, mensagem);
   cout << endl
        << "Selecione um tipo de enquadramento (camada de enlace):" << endl
@@ -18,10 +19,10 @@ void AplicacaoTransmissora() {
   cin >> tipoDeErro;
   cout << "Selecionado: " << tipoDeErro << endl;
   cout << endl
-       << "Selecione uma probabilidade de erro de 0 a 100 por bit (camada de "
+       << "Selecione uma probabilidade de erro de 0 a 5 (em %) por bit (camada de "
           "enlace):"
        << endl;
-  cin >> probDeErro;
+  cin >> erro;
   cout << "Probabilidade de erro: " << probDeErro << "%" << endl;
   cout << endl
        << "Selecione um modo de codificação (camada física):" << endl
@@ -29,6 +30,7 @@ void AplicacaoTransmissora() {
        << "1: Codificação Manchester" << endl
        << "2: Codificação Bipolar" << endl;
   cin >> codificacaoFisica;
+  getProbErro(erro);
   CamadaDeAplicacaoTransmissora(mensagem);
 }
 
@@ -62,4 +64,10 @@ string TransformaASCIIEmString(vector<int> quadro) {
     mensagem.append(1, char(quadro[i]));
   }
   return mensagem;
+}
+
+void getProbErro(int erro){
+  probDeErro = erro;
+  if (erro >= 5) probDeErro = 5;
+  if (erro <= 0) probDeErro = 0;
 }

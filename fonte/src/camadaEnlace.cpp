@@ -163,7 +163,7 @@ vector<int> CamadaEnlaceTransmissoraControleDeErroHamming(
     
     index_paridade = 1;
     paridade = 0;
-    for (j = 0; j < buffer.size(); j++) { //calcula os bits de verificação pelo método XOR
+    for (j = 0; j < buffer.size(); j++) { //cálculo dos bits de verificação
       if (j == (index_paridade - 1)) {
         index_paridade = index_paridade << 1;
         j++;
@@ -175,7 +175,7 @@ vector<int> CamadaEnlaceTransmissoraControleDeErroHamming(
 
     index_paridade = 1;
     cout << "[" << (i/HAMMING_BITS_DADOS) + 1 << "]: ";
-    for (j = 0; j < buffer.size(); j++) { //insere os bits de verificação e a mensagem no quadro de saída
+    for (j = 0; j < buffer.size(); j++) { //os bits de verificação e a mensagem são inseridos no quadro de saída
       if (j == (index_paridade - 1)) {
         if (paridade % 2) {
           quadroChecado.push_back(1);
@@ -228,8 +228,8 @@ vector<int> CamadaEnlaceReceptoraControleDeErroHamming(
       }
       cout << buffer.at(j);
     }
-    if (paridade) {
-      cout << " - ERRO - bit " << paridade << " corrigido " << endl;
+    if (paridade && ( quadro.size() >= paridade )) {
+      cout << " - ERRO - correção realizada no bit " << paridade << endl;
       if (buffer.at(paridade - 1)) {
         buffer.at(paridade - 1) = 0;
       }
@@ -385,9 +385,9 @@ vector<int> CamadaEnlaceReceptoraEnquadramentoContagemDeCaracteres(
     vector<int> quadroEnquadrado) {
   vector<int> quadro;
   unsigned int i = 0;
+  unsigned int j = 0;
+  unsigned int header = 0;
   while (i < quadroEnquadrado.size()) {
-    unsigned int j = 0;
-    unsigned int header = 0;
     header = quadroEnquadrado.at(i);
     j = i + 1;
     i += header;

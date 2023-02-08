@@ -53,3 +53,9 @@ string TransformaASCIIEmString(vector<int>);
  * Contagem de Caracteres ou Inserção de Bytes.
  */
 void CamadaEnlaceTransmissora(const vector<int>&);
+
+/**
+ * Limita a chance de erro entre 0 e 5%.
+ * @param erro Chance de erro que foi colocada como input pelo usuário do sistema.
+*/
+void getProbErro(int erro);
